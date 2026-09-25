@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Katastrophenschutz-Dashboard Berlin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== LOGIN-BILDSCHIRM ===================== -->
+<div id="login-screen" class="login-screen">
+  <form id="login-form" class="login-card" autocomplete="off">
+    <div class="login-badge">⛨</div>
+    <h1 data-i18n="loginTitle">Katastrophenschutz-Dashboard</h1>
+    <p class="login-sub" data-i18n="loginSub">Berlin · Lagebild-Zugang</p>
+    <label data-i18n="loginUser">Benutzername
+      <input type="text" id="login-user" autocomplete="username" required>
+    </label>
+    <label data-i18n="loginPass">Passwort
+      <input type="password" id="login-pass" autocomplete="current-password" required>
+    </label>
+    <button type="submit" data-i18n="loginBtn">Anmelden</button>
+    <p id="login-error" class="login-error"></p>
+    <p class="login-note" data-i18n="loginNote">Demo-Zugang für die Schulabgabe · kein echter Sicherheitsmechanismus.</p>
+  </form>
+</div>
+
+<!-- ===================== DASHBOARD ===================== -->
+<div id="dashboard" class="dashboard hidden">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">⛨</span>
+      <div>
+        <h1 data-i18n="title">Katastrophenschutz-Dashboard Berlin</h1>
+        <p class="brand-sub" data-i18n="subtitle">Lagebild · Wetter · Pegel · Einsätze</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span id="clock" class="clock">--:--:--</span>
+      <button id="lang-toggle" class="pill-btn" type="button">EN</button>
+      <button id="logout-btn" class="pill-btn pill-btn--ghost" type="button" data-i18n="logout">Abmelden</button>
+    </div>
+  </header>
+
+  <main class="grid">
+
+    <!-- WETTER -->
+    <section class="widget" id="widget-weather">
+      <div class="widget-head">
+        <h2><span class="w-icon">🌤️</span><span data-i18n="weatherTitle">Wetter</span></h2>
+        <span class="status" id="status-weather" data-i18n="statusLoading">wird geladen…</span>
+      </div>
+      <div class="widget-body" id="weather-body">
+        <div class="weather-now">
+          <span id="weather-icon" class="weather-now-icon">–</span>
+          <span id="weather-temp" class="weather-now-temp">–°</span>
+          <span id="weather-desc" class="weather-now-desc" data-i18n="statusLoading">wird geladen…</span>
+        </div>
+        <div class="forecast-row" id="forecast-row"></div>
+      </div>
+      <p class="widget-source" data-i18n="weatherSource">Quelle: DWD ICON-Modell (via Open-Meteo)</p>
+    </section>
+
+    <!-- PEGELSTAND -->
+    <section class="widget" id="widget-pegel">
+      <div class="widget-head">
+        <h2><span class="w-icon">🌊</span><span data-i18n="pegelTitle">Pegelstand Spree</span></h2>
+        <span class="status" id="status-pegel" data-i18n="statusLoading">wird geladen…</span>
+      </div>
+      <div class="widget-body pegel-body">
+        <div class="gauge-wrap">
+          <div class="gauge-track">
+            <div class="gauge-fill" id="gauge-fill"></div>
+            <div class="gauge-marker" id="gauge-marker"></div>
+          </div>
+          <div class="gauge-labels">
+            <span id="gauge-min">– cm</span>
+            <span id="gauge-max">– cm</span>
+          </div>
+        </div>
+        <div class="pegel-info">
+          <div class="pegel-value" id="pegel-value">– cm</div>
+          <div class="pegel-tag" id="pegel-tag" data-i18n="statusLoading">wird geladen…</div>
+          <div class="pegel-station" data-i18n="pegelStation">Pegel Köpenick, Spree-Oder-Wasserstraße</div>
+        </div>
+      </div>
+      <p class="widget-source" data-i18n="pegelSource">Quelle: PegelOnline (WSV) · Bereich = Min/Max der letzten 30 Tage</p>
+    </section>
+
+    <!-- EINSÄTZE -->
+    <section class="widget" id="widget-einsaetze">
+      <div class="widget-head">
+        <h2><span class="w-icon">🚒</span><span data-i18n="einsaetzeTitle">Einsätze der Feuerwehr</span></h2>
+        <span class="status" id="status-einsaetze" data-i18n="statusLoading">wird geladen…</span>
+      </div>
+      <div class="widget-body einsaetze-body" id="einsaetze-body">
+        <div class="kpi" id="einsaetze-kpi">–</div>
+        <div class="kpi-label" id="einsaetze-label" data-i18n="statusLoading">wird geladen…</div>
+        <div class="einsaetze-hint" id="einsaetze-hint"></div>
+      </div>
+      <p class="widget-source" data-i18n="einsaetzeSource">Quelle: Berliner Feuerwehr Open Data (GitHub) · aggregierte Daten, kein Live-Feed</p>
+    </section>
+
+  </main>
+
+  <footer class="legend">
+    <div class="legend-items">
+      <span class="legend-item"><span class="dot dot-green"></span><span data-i18n="legendGreen">Unauffällig</span></span>
+      <span class="legend-item"><span class="dot dot-amber"></span><span data-i18n="legendAmber">Erhöht / beobachten</span></span>
+      <span class="legend-item"><span class="dot dot-red"></span><span data-i18n="legendRed">Kritisch</span></span>
+      <span class="legend-item"><span class="icon-legend">🌤️/🌊/🚒</span><span data-i18n="legendIcons">Wetter · Pegel · Einsätze</span></span>
+    </div>
+    <div class="legend-sources" data-i18n="legendFooter">
+      Daten: DWD/Open-Meteo · WSV PegelOnline · Berliner Feuerwehr Open Data — nur zu Übungs-/Schulzwecken, keine Alarmierungsgrundlage.
+    </div>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
