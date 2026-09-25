@@ -33,8 +33,7 @@ Diesen Link kannst du direkt bei deinem Lehrer abgeben.
 1. Den erhaltenen Link öffnen (funktioniert in jedem aktuellen Browser,
    keine Installation nötig).
 2. Auf dem Login-Bildschirm anmelden:
-   - **Benutzername:** `Admin`
-   - **Passwort:** `Start1234!`
+   - login daten sind in Moodle
 3. Das Dashboard zeigt drei Kacheln (Wetter, Pegelstand, Einsätze). Jede
    Kachel hat oben rechts einen **Status-Badge** mit dem Datenstand
    (Datum/Uhrzeit der letzten erfolgreichen Abfrage), damit erkennbar ist,
