@@ -10,6 +10,11 @@ Pegelstände und Wetterprognose übersichtlich dar.
 
 Über GitHub Pages: `https://marlon405.github.io/Dashboard-KSB/`
 
+## Demo-Zugang
+
+- Benutzername: `admin`
+- Passwort: `BerlinDemo2026!`
+
 ## Funktionen
 
 - Übersicht mit den wichtigsten Kennzahlen der drei Datenquellen
@@ -55,10 +60,6 @@ GitHub Pages veröffentlicht (siehe `.github/workflows/deploy.yml`).
 
 - Benutzername: `admin`
 - Passwort: `BerlinDemo2026!`
-
-Das Login ist ausschließlich eine Zugangssimulation und bietet keinen Schutz vertraulicher Daten.
-Die Zugangsdaten stehen im ausgelieferten Quellcode (`src/config.ts`). Gespeichert wird nur der
-Anmeldestatus, niemals das Passwort.
 
 ## Technologie
 
