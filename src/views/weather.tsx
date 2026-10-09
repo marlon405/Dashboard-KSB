@@ -24,9 +24,9 @@ export function WeatherView({ d }: { d: D }) {
         const pages = Math.ceil(all.length / PAGE);
         const p = Math.min(page, Math.max(pages - 1, 0));
         return (
-          <div className="flex flex-col gap-3 lg:h-full lg:min-h-0">
+          <div className="flex flex-col gap-3 lg:min-h-full">
             <div className="flex flex-wrap items-center gap-3">
-              <StatusBadge state={d.weather} />
+              <StatusBadge state={d.weather} sourceKey="weather" />
               <FetchLine state={d.weather} />
               <span className="font-mono text-[10.5px] text-muted-foreground">{t('Referenzpunkt:')} {w.reference}</span>
               <div className="ml-auto max-w-md"><ForecastNotice /></div>

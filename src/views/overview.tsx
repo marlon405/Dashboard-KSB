@@ -21,12 +21,12 @@ export function OverviewView({ d, onNavigate }: { d: D; onNavigate: (view: ViewI
   const [tab, setTab] = useState<Tab>('fire');
   const hide = (t: Tab) => (tab !== t ? 'hidden lg:flex' : '');
   return (
-    <div className="flex flex-col gap-3 lg:h-full lg:min-h-0">
+    <div className="flex flex-col gap-3 lg:min-h-full">
       <Segmented className="lg:hidden" value={tab} onChange={(value) => setTab(value as Tab)} options={[
         { id: 'fire', label: t('Feuerwehr') }, { id: 'water', label: t('Pegel') }, { id: 'today', label: t('Wetter heute') }, { id: 'week', label: t('7 Tage') },
       ]} />
       <div className="grid gap-3 lg:min-h-0 lg:flex-1 lg:grid-cols-3">
-        <Panel testId="panel-fire" className={hide('fire')} title={t('Feuerwehr')} accent="fire" icon={<Flame />} aside={<StatusBadge state={d.fire} />} footer={<FetchLine state={d.fire} />}>
+        <Panel testId="panel-fire" className={hide('fire')} title={t('Feuerwehr')} accent="fire" icon={<Flame />} aside={<StatusBadge state={d.fire} sourceKey="fire" />} footer={<FetchLine state={d.fire} />}>
           <SourceGate state={d.fire} onRetry={d.refresh}>
             {(f) => (
               <div className="flex min-h-0 flex-1 flex-col gap-2">
@@ -41,7 +41,7 @@ export function OverviewView({ d, onNavigate }: { d: D; onNavigate: (view: ViewI
             )}
           </SourceGate>
         </Panel>
-        <Panel testId="panel-water" className={hide('water')} title={t('Pegelstand Berlin-Köpenick')} accent="water" icon={<Waves />} aside={<StatusBadge state={d.water} />} footer={<FetchLine state={d.water} />}>
+        <Panel testId="panel-water" className={hide('water')} title={t('Pegelstand Berlin-Köpenick')} accent="water" icon={<Waves />} aside={<StatusBadge state={d.water} sourceKey="water" />} footer={<FetchLine state={d.water} />}>
           <SourceGate state={d.water} onRetry={d.refresh}>
             {(w) => (
               <div className="flex min-h-0 flex-1 flex-col gap-2">
@@ -57,7 +57,7 @@ export function OverviewView({ d, onNavigate }: { d: D; onNavigate: (view: ViewI
             )}
           </SourceGate>
         </Panel>
-        <Panel testId="panel-today" className={hide('today')} title={t('Wetter heute')} accent="weather" icon={<CloudSun />} aside={<StatusBadge state={d.weather} />} footer={<FetchLine state={d.weather} />}>
+        <Panel testId="panel-today" className={hide('today')} title={t('Wetter heute')} accent="weather" icon={<CloudSun />} aside={<StatusBadge state={d.weather} sourceKey="weather" />} footer={<FetchLine state={d.weather} />}>
           <SourceGate state={d.weather} onRetry={d.refresh}>
             {(w) => (
               <div className="flex min-h-0 flex-1 flex-col gap-2">

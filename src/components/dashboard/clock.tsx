@@ -15,7 +15,7 @@ export function BerlinClock() {
   return (
     <div className="flex items-baseline gap-3" data-testid="text-clock">
       <span className="font-mono text-xl font-semibold tabular-nums tracking-tight">{time}</span>
-      <span className="hidden text-xs text-muted-foreground sm:inline">{date}</span>
+      <span className="hidden min-w-[13rem] whitespace-nowrap text-xs text-muted-foreground sm:inline">{date}</span>
     </div>
   );
 }

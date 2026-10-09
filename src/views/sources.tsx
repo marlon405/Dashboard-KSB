@@ -11,7 +11,7 @@ function SourceCard({ id, title, what, state, extra, accent }: { accent: Accent;
   useLanguage();
   const s = SOURCE_LINKS[id];
   return (
-    <Panel testId={`panel-source-${id}`} accent={accent} title={t(title)} aside={<StatusBadge state={state} />}>
+    <Panel testId={`panel-source-${id}`} accent={accent} title={t(title)} aside={<StatusBadge state={state} sourceKey={id} />}>
       <div className="flex flex-1 flex-col gap-2 text-xs">
         <div className="font-medium">{s.name}</div>
         <p className="leading-relaxed text-muted-foreground">{t(what)}</p>
@@ -31,7 +31,7 @@ function SourceCard({ id, title, what, state, extra, accent }: { accent: Accent;
 export function SourcesView({ d }: { d: D }) {
   useLanguage();
   return (
-    <div className="grid gap-3 lg:h-full lg:min-h-0 lg:grid-rows-[1fr_auto]">
+    <div className="grid gap-3 lg:min-h-full lg:grid-rows-[1fr_auto]">
       <div className="grid gap-3 lg:min-h-0 lg:grid-cols-3">
         <SourceCard accent="fire" id="fire" title="Feuerwehr" state={d.fire} what="Tägliche Einsatzdaten als CSV. Ausgewertet wird ausschließlich die Spalte mission_count_fire für den vorherigen Kalendertag (Europe/Berlin)." extra="Fehlt der Vortag, wird dies ausdrücklich angezeigt. Doppelte oder ungültige Datensätze werden nicht ungeprüft summiert." />
         <SourceCard accent="water" id="water" title="Pegelstand" state={d.water} what="Offizielle REST-Schnittstelle der Wasserstraßen- und Schifffahrtsverwaltung. Messgröße Wasserstand (W) der Station BERLIN-KÖPENICK." extra="Angezeigt werden Rohwert, Einheit und Messzeitpunkt laut Quelle. Keine Gefahreneinschätzung." />

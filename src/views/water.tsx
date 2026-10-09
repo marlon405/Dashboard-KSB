@@ -24,8 +24,8 @@ export function WaterView({ d }: { d: D }) {
       {(w) => {
         const r = range(w.history);
         return (
-          <div className="grid gap-3 lg:h-full lg:min-h-0 lg:grid-cols-[minmax(280px,340px)_1fr]">
-            <Panel testId="panel-water-kpi" title={t('Pegelstand')} accent="water" icon={<Waves />} aside={<StatusBadge state={d.water} />} footer={<FetchLine state={d.water} />}>
+          <div className="grid gap-3 lg:min-h-full lg:grid-cols-[minmax(280px,340px)_1fr]">
+            <Panel testId="panel-water-kpi" title={t('Pegelstand')} accent="water" icon={<Waves />} aside={<StatusBadge state={d.water} sourceKey="water" />} footer={<FetchLine state={d.water} />}>
               <div className="flex flex-1 flex-col gap-4">
                 <WaterHeadline data={w} />
                 <StaleNote state={d.water} />

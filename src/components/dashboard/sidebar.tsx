@@ -1,4 +1,4 @@
-import { BookOpen, CloudSun, FileText, Flame, LayoutGrid, LogOut, Waves } from 'lucide-react';
+import { BookOpen, CloudSun, FileText, Flame, LayoutGrid, Waves } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getLanguage, t, useLanguage } from '@/lib/i18n';
 
@@ -22,7 +22,7 @@ function Mark() {
   );
 }
 
-export function Sidebar({ view, onChange, onLogout }: { view: ViewId; onChange: (v: ViewId) => void; onLogout: () => void }) {
+export function Sidebar({ view, onChange }: { view: ViewId; onChange: (v: ViewId) => void }) {
   useLanguage();
   return (
     <>
@@ -49,9 +49,6 @@ export function Sidebar({ view, onChange, onLogout }: { view: ViewId; onChange: 
             </button>
           );
         })}
-        <button data-testid="button-logout" onClick={onLogout} title={t('Abmelden')} className="mt-auto flex w-[64px] flex-col items-center gap-1 rounded-md py-2 text-[10px] text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground">
-          <LogOut className="size-[18px]" strokeWidth={1.75} />{t('Abmelden')}
-        </button>
       </nav>
 
       <nav aria-label={t('Hauptnavigation mobil')} className="fixed inset-x-0 bottom-0 z-30 flex border-t border-sidebar-border bg-sidebar lg:hidden">

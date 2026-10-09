@@ -8,10 +8,9 @@ import { FireView } from '@/views/fire';
 import { WaterView } from '@/views/water';
 import { SourcesView } from '@/views/sources';
 import { NotesView } from '@/views/notes';
-import { exportDashboardCsv } from '@/lib/export-csv';
 import { t, useLanguage } from '@/lib/i18n';
 
-export function DashboardPage({ onLogout }: { onLogout: () => void }) {
+export function DashboardPage() {
   const { language } = useLanguage();
   const [view, setView] = useState<ViewId>('overview');
   const d = useDashboard();
@@ -20,10 +19,10 @@ export function DashboardPage({ onLogout }: { onLogout: () => void }) {
 
   return (
     <div className="flex min-h-[100dvh] bg-background lg:h-[100dvh]">
-      <Sidebar view={view} onChange={setView} onLogout={onLogout} />
+      <Sidebar view={view} onChange={setView} />
       <div className="flex min-w-0 flex-1 flex-col lg:min-h-0">
-        <TopBar title={title} lastCompiledAt={d.lastCompiledAt} busy={busy} onRefresh={d.refresh} onLogout={onLogout} onExport={view === 'notes' ? undefined : () => exportDashboardCsv(view, d)} />
-        <main key={view} className="flex flex-1 flex-col p-3 pb-20 lg:min-h-0 lg:p-4 lg:pb-4" data-testid={`view-${view}`}>
+        <TopBar title={title} lastCompiledAt={d.lastCompiledAt} busy={busy} onRefresh={d.refresh} onBack={view === 'overview' ? undefined : () => setView('overview')} sources={[d.fire, d.water, d.weather]} />
+        <main key={view} className="flex flex-1 flex-col p-3 pb-20 lg:min-h-0 lg:overflow-y-auto lg:p-4 lg:pb-4" data-testid={`view-${view}`}>
           {view === 'overview' && <OverviewView d={d} onNavigate={setView} />}
           {view === 'weather' && <WeatherView d={d} />}
           {view === 'fire' && <FireView d={d} />}

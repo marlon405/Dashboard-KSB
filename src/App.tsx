@@ -1,6 +1,4 @@
 import { ErrorBoundary, type ErrorFallbackProps } from '@/components/error-boundary';
-import { useAuth } from '@/lib/auth';
-import { LoginPage } from '@/pages/login';
 import { DashboardPage } from '@/pages/dashboard';
 import { t, useLanguage } from '@/lib/i18n';
 
@@ -19,10 +17,9 @@ function CrashFallback({ error, resetError }: ErrorFallbackProps) {
 }
 
 function App() {
-  const { authenticated, login, logout } = useAuth();
   return (
     <ErrorBoundary FallbackComponent={CrashFallback}>
-      {authenticated ? <DashboardPage onLogout={logout} /> : <LoginPage onLogin={login} />}
+      <DashboardPage />
     </ErrorBoundary>
   );
 }

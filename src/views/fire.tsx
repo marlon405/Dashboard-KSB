@@ -33,8 +33,8 @@ export function FireView({ d }: { d: D }) {
         const first = f.history[0]?.date;
         const last = f.history[f.history.length - 1]?.date;
         return (
-          <div className="grid gap-3 lg:h-full lg:min-h-0 lg:grid-cols-[minmax(280px,340px)_1fr]">
-            <Panel testId="panel-fire-kpi" title={t('Brandeinsätze gestern')} accent="fire" icon={<Flame />} aside={<StatusBadge state={d.fire} />} footer={<FetchLine state={d.fire} />}>
+          <div className="grid gap-3 lg:min-h-full lg:grid-cols-[minmax(280px,340px)_1fr]">
+            <Panel testId="panel-fire-kpi" title={t('Brandeinsätze gestern')} accent="fire" icon={<Flame />} aside={<StatusBadge state={d.fire} sourceKey="fire" />} footer={<FetchLine state={d.fire} />}>
               <div className="flex flex-1 flex-col gap-4">
                 <FireHeadline data={f} />
                 <StaleNote state={d.fire} />

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { AlertTriangle, RotateCw } from 'lucide-react';
 import { formatTime, type SourceState } from '@/data';
 import { cn } from '@/lib/utils';
+import { useAvailabilityHistory } from '@/lib/availability';
 import { t, translateError, useLanguage } from '@/lib/i18n';
 
 type Tone = 'ok' | 'stale' | 'error' | 'loading';
@@ -21,16 +22,81 @@ const toneStyle: Record<Tone, { dot: string; label: string; text: string }> = {
   loading: { dot: 'bg-muted-foreground/50 animate-pulse', label: 'Wird geladen', text: 'text-muted-foreground' },
 };
 
-export function StatusBadge({ state, testId }: { state: SourceState<unknown>; testId?: string }) {
+function cellClass(tone: string | null): string {
+  switch (tone) {
+    case 'ok': return 'bg-[hsl(var(--ok))]';
+    case 'stale': return 'bg-[hsl(var(--warn))]';
+    case 'error': return 'bg-destructive';
+    case 'loading': return 'bg-muted-foreground/40';
+    default: return 'bg-muted';
+  }
+}
+
+function LegendItem({ color, label }: { color: string; label: string }) {
+  return <span className="inline-flex items-center gap-1"><span className={cn('size-2 rounded-[2px]', color)} />{label}</span>;
+}
+
+export function StatusBadge({ state, sourceKey = 'quelle', testId }: { state: SourceState<unknown>; sourceKey?: string; testId?: string }) {
   useLanguage();
-  const style = toneStyle[toneOf(state)];
+  const tone = toneOf(state);
+  const style = toneStyle[tone];
+  const history = useAvailabilityHistory(sourceKey, tone);
   return (
-    <span data-testid={testId} className={cn('inline-flex items-center gap-1.5 rounded-full border border-current/25 bg-current/[0.07] px-2 py-0.5 text-[11px] font-medium', style.text)}>
-      <span className={cn('size-1.5 rounded-full', style.dot)} />
-      {t(state.loading && state.data ? 'Aktualisiere…' : style.label)}
+    <span className="group relative inline-flex">
+      <button
+        type="button"
+        data-testid={testId}
+        aria-label={t('Verfügbarkeit der letzten 24 Stunden anzeigen')}
+        className={cn('inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-current/25 bg-current/[0.07] px-2 py-0.5 text-[11px] font-medium transition-colors hover:bg-current/[0.16] focus-visible:outline-2 focus-visible:outline-primary', style.text)}
+      >
+        <span className={cn('size-1.5 rounded-full', style.dot)} />
+        {t(state.loading && state.data ? 'Aktualisiere…' : style.label)}
+      </button>
+      <div role="tooltip" className="pointer-events-none absolute right-0 top-full z-50 mt-1.5 hidden w-60 rounded-lg border border-border bg-popover p-3 text-left text-foreground shadow-xl group-hover:block group-focus-within:block">
+        <div className="eyebrow mb-1.5">{t('Verfügbarkeit · letzte 24 h')}</div>
+        <div className="flex items-stretch gap-[2px]">
+          {history.map((b) => (
+            <span key={b.hour} className={cn('h-6 flex-1 rounded-[1px]', cellClass(b.tone))} />
+          ))}
+        </div>
+        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-muted-foreground">
+          <LegendItem color="bg-[hsl(var(--ok))]" label={t('Aktuell')} />
+          <LegendItem color="bg-[hsl(var(--warn))]" label={t('Veraltet')} />
+          <LegendItem color="bg-destructive" label={t('Ausfall')} />
+          <LegendItem color="bg-muted" label={t('Keine Daten')} />
+        </div>
+      </div>
     </span>
   );
 }
+
+function overallTone(sources: SourceState<unknown>[]): Tone {
+  const tones = sources.map(toneOf);
+  if (tones.includes('error')) return 'error';
+  if (tones.includes('stale')) return 'stale';
+  if (tones.includes('loading')) return 'loading';
+  return 'ok';
+}
+
+const globalStyle: Record<Tone, { dot: string; text: string; label: string }> = {
+  ok: { dot: 'bg-[hsl(var(--ok))]', text: 'text-[hsl(var(--ok))]', label: 'Alles aktuell' },
+  stale: { dot: 'bg-[hsl(var(--warn))]', text: 'text-[hsl(var(--warn))]', label: 'Teilweise veraltet' },
+  error: { dot: 'bg-destructive', text: 'text-destructive', label: 'Abruf gestört' },
+  loading: { dot: 'bg-muted-foreground/50 animate-pulse', text: 'text-muted-foreground', label: 'Wird geladen' },
+};
+
+/** Gesamtstatus aller Quellen – zeigt neben der Uhr, ob alles aktuell ist. */
+export function GlobalStatus({ sources, className }: { sources: SourceState<unknown>[]; className?: string }) {
+  useLanguage();
+  const style = globalStyle[overallTone(sources)];
+  return (
+    <span data-testid="status-global" className={cn('inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-current/25 bg-current/[0.07] px-2.5 py-1 text-[11px] font-medium', style.text, className)}>
+      <span className={cn('size-1.5 rounded-full', style.dot)} />
+      {t(style.label)}
+    </span>
+  );
+}
+
 
 /** Kompakte Abrufzeile: letzter Erfolg / letzter Fehlversuch. */
 export function FetchLine({ state, className }: { state: SourceState<unknown>; className?: string }) {
