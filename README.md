@@ -10,11 +10,6 @@ Pegelstände und Wetterprognose übersichtlich dar.
 
 Über GitHub Pages: `https://marlon405.github.io/Dashboard-KSB/`
 
-## Demo-Zugang
-
-- Benutzername: `admin`
-- Passwort: `BerlinDemo2026!`
-
 ## Funktionen
 
 - Übersicht mit den wichtigsten Kennzahlen der drei Datenquellen
